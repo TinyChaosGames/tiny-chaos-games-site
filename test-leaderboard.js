@@ -105,7 +105,7 @@
         updated.textContent = "Waiting for approved data";
       } else {
         if (boards.some(b => b.difficulty_id === current)) select.value = current;
-        lastUpdated = typeof payload.published_at === "string" && /^\\d{4}-\\d{2}-\\d{2}T/.test(payload.published_at)
+        lastUpdated = typeof payload.published_at === "string" && /^\d{4}-\d{2}-\d{2}T/.test(payload.published_at)
           ? payload.published_at.slice(0, 10) : "";
         displayBoard();
       }
