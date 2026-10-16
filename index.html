@@ -53,8 +53,15 @@
     </div>
   </section>
   <section class="section section-dark" id="leaderboard" aria-labelledby="leaderboard-title"><div class="shell">
-    <div class="section-head"><div><p class="eyebrow">02 / COMING ONLINE</p><h2 id="leaderboard-title">GLOBAL <span>LEADERBOARD</span></h2><p class="section-intro">One tiny pixel. A whole universe of players. Chase a personal best and, in a future update, climb the global ranks.</p></div><span class="section-mark">♛</span></div>
-    <div class="ranking-preview"><div class="ranking-top"><span>GLOBAL RANKINGS</span><span class="preview-pill">IN DEVELOPMENT</span></div><div class="ranking-columns"><span>RANK</span><span>PLAYER</span><span>SCORE</span></div><div class="ranking-placeholder"><span class="empty-trophy" aria-hidden="true">♛</span><h3>The leaderboard is on its way.</h3><p>Verified global scores will appear here when online rankings are ready. No invented players. No placeholder records.</p></div><div class="ranking-foot"><span>FAIR PLAY FIRST</span><span>ONLINE FEATURE / PREVIEW</span></div></div>
+    <div class="section-head"><div><p class="eyebrow">02 / TESTING PHASE</p><h2 id="leaderboard-title">GLOBAL <span>LEADERBOARD</span></h2><p class="section-intro">A first look at ONE MORE PIXEL test scores. Only records selected for public display will appear here. Test results are not verified competitive rankings.</p></div><span class="section-mark" aria-hidden="true">♛</span></div>
+    <div class="ranking-preview" data-test-leaderboard>
+      <div class="ranking-top"><span>ONE MORE PIXEL / TEST RANKINGS</span><span class="preview-pill">TEST DATA</span></div>
+      <p class="ranking-disclaimer">These scores come from the testing build. They are not production-verified results.</p>
+      <div class="ranking-columns" aria-hidden="true"><span>RANK</span><span>PLAYER</span><span>SCORE</span></div>
+      <ol class="ranking-entries" id="test-ranking-entries" aria-label="Selected test scores" hidden></ol>
+      <div class="ranking-placeholder" id="test-ranking-state" role="status" aria-live="polite"><span class="empty-trophy" aria-hidden="true">♛</span><h3>Test leaderboard is not available yet.</h3><p>We are preparing a public list of selected test scores. Player testing sessions remain private.</p></div>
+      <div class="ranking-foot"><span>SELECTED TEST SCORES ONLY</span><button class="ranking-refresh" type="button" id="test-ranking-refresh" hidden>Refresh scores ↻</button></div>
+    </div>
   </div></section>
   <section class="section shell" id="challenges" aria-labelledby="challenge-title">
     <div class="section-head"><div><p class="eyebrow">03 / COMING ONLINE</p><h2 id="challenge-title">BEAT MY <span class="gold-text">PIXEL</span></h2><p class="section-intro">Send a challenge to a friend. The same course, the same rules — just three attempts to beat their score.</p></div><span class="section-mark">✕</span></div>
@@ -63,5 +70,6 @@
   <section class="section studio-section" id="studio" aria-labelledby="studio-title"><div class="shell studio-layout"><div><p class="eyebrow">04 / THE STUDIO</p><h2 id="studio-title">TINY <span>CHAOS</span><br>GAMES</h2><p>We make small games with big personality: quick to understand, exciting to master, and built with care.</p><p>ONE MORE PIXEL is our current focus. There is more chaos to come.</p><a class="btn btn-outline" href="mailto:games.tinychaos@gmail.com">Say hello <span aria-hidden="true">↗</span></a></div><div class="studio-emblem" aria-hidden="true"><div class="emblem-halo"></div><div class="emblem-pixel"><i></i><i></i></div><p>SMALL STUDIO.<br>BIG UNIVERSE.</p></div></div></section>
 </main>
 <footer class="site-footer"><div class="shell footer-upper"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true"><span></span><span></span></span><span>TINY <em>CHAOS</em> GAMES</span></a><p>Small games. Big challenges.</p></div><div class="shell footer-lower"><span>© 2026 Tiny Chaos Games</span><div><a href="privacy/one-more-pixel/">Privacy Policy (EN)</a><a href="privacy/one-more-pixel/pl/">Polityka prywatności (PL)</a><a href="mailto:games.tinychaos@gmail.com">Contact</a></div></div></footer>
+<script src="leaderboard.js" defer></script>
 </body>
 </html>
