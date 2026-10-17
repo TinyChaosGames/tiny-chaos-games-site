@@ -12,3 +12,9 @@
 .ranking-test-note{padding:10px 20px;color:#b2c0cf;font-size:.85rem;line-height:1.6}
 .ranking-live-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 @media(max-width:600px){.ranking-entry{grid-template-columns:54px minmax(0,1fr) 75px;gap:8px;padding:12px}.ranking-entry-score{font-size:.9rem}.ranking-test-note{padding:10px 12px}}
+
+.ranking-difficulties{display:flex;gap:8px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid rgba(100,227,238,.14)}
+.ranking-difficulties button{border:1px solid rgba(100,227,238,.35);border-radius:8px;background:#111c2f;color:#b2c0cf;padding:9px 19px;font:inherit;font-weight:800;letter-spacing:.07em;cursor:pointer}
+.ranking-difficulties button[aria-selected="true"]{background:#f8bd47;color:#081324;border-color:#f8bd47}
+.ranking-difficulties button:focus-visible{outline:3px solid #64e3ee;outline-offset:3px}
+@media(max-width:600px){.ranking-difficulties{padding:12px;gap:6px}.ranking-difficulties button{flex:1;padding:8px 5px;font-size:.82rem}}
