@@ -5,10 +5,10 @@
   const status = document.getElementById("ranking-status");
   const refresh = document.getElementById("ranking-refresh");
   const updated = document.getElementById("ranking-updated");
-  if (!list || !status || !refresh || !updated) return;
-
+  const tabs = Array.from(document.querySelectorAll("[data-ranking-difficulty]"));
+  if (!list || !status || !refresh || !updated || tabs.length !== 3) return;
   const number = new Intl.NumberFormat("en-US");
-  let active = false;
+  let difficulty = "easy", currentController = null, requestId = 0;
   function message(title, description) {
     list.replaceChildren();
     const wrap = document.createElement("div");
@@ -20,7 +20,7 @@
     wrap.append(heading, paragraph);
     list.append(wrap);
   }
-  function safeEntries(payload) {
+  function entriesFrom(payload) {
     if (Array.isArray(payload?.entries)) return payload.entries;
     if (Array.isArray(payload?.leaderboard?.entries)) return payload.leaderboard.entries;
     if (Array.isArray(payload?.data?.entries)) return payload.data.entries;
@@ -29,7 +29,7 @@
   function render(entries) {
     list.replaceChildren();
     if (!entries.length) {
-      message("No public test scores yet.", "Only players who opted in to this test leaderboard appear here. Check back later.");
+      message("No test scores yet.", "No active test players have scores in this difficulty.");
       return;
     }
     const fragment = document.createDocumentFragment();
@@ -41,56 +41,76 @@
       row.className = "ranking-entry";
       const rank = document.createElement("span");
       rank.className = "ranking-entry-rank";
-      const position = Number(entry.position ?? entry.rank);
+      const position = Number(entry.position);
       rank.textContent = "#" + (Number.isSafeInteger(position) && position > 0 ? position : index + 1);
-      const alias = document.createElement("span");
-      alias.className = "ranking-entry-player";
-      const candidate = entry.public_alias ?? entry.player_alias ?? entry.display_name ?? entry.nickname ?? entry.alias ?? entry.name;
-      alias.textContent = typeof candidate === "string" && candidate.trim() ? candidate.trim().slice(0, 64) : "Player";
+      const player = document.createElement("span");
+      player.className = "ranking-entry-player";
+      const pixelId = entry.pixel_id;
+      player.textContent = typeof pixelId === "string" && pixelId.trim() ? pixelId.trim().slice(0, 64) : "TEST PLAYER #" + (index + 1);
       const points = document.createElement("span");
       points.className = "ranking-entry-score";
       points.textContent = number.format(score);
-      row.append(rank, alias, points);
+      row.append(rank, player, points);
       fragment.append(row);
     });
-    if (!fragment.childNodes.length) {
-      message("No public test scores yet.", "The API returned no displayable scores.");
-      return;
-    }
-    list.append(fragment);
+    if (!fragment.childNodes.length) message("No displayable scores.", "Please try again later.");
+    else list.append(fragment);
+  }
+  function selectDifficulty(next) {
+    if (!["easy", "normal", "hard"].includes(next)) return;
+    difficulty = next;
+    tabs.forEach(tab => {
+      const selected = tab.dataset.rankingDifficulty === difficulty;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    load();
   }
   async function load() {
-    if (active) return;
-    active = true;
+    currentController?.abort();
+    const controller = new AbortController();
+    currentController = controller;
+    const id = ++requestId;
     refresh.disabled = true;
     status.textContent = "LOADING";
-    message("Loading leaderboard…", "Fetching public test results.");
-    const controller = new AbortController();
+    updated.textContent = "Loading…";
+    message("Loading leaderboard…", "Fetching public test scores.");
     const timeout = setTimeout(() => controller.abort(), 10000);
     try {
       const url = new URL(API);
-      url.searchParams.set("difficulty", "EASY");
+      url.searchParams.set("difficulty", difficulty);
       url.searchParams.set("limit", "100");
       const response = await fetch(url.toString(), {method: "GET", mode: "cors", credentials: "omit", cache: "no-store", signal: controller.signal, headers: {"Accept": "application/json"}});
       if (!response.ok) throw new Error("HTTP " + response.status);
       const payload = await response.json();
-      const entries = safeEntries(payload);
-      if (!entries) throw new Error("Unexpected response");
+      if (id !== requestId) return;
+      const entries = entriesFrom(payload);
+      if (!entries) throw new Error("Unexpected response format");
       render(entries);
       status.textContent = "LIVE TEST";
       updated.textContent = "Updated " + new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
     } catch (error) {
+      if (id !== requestId) return;
       status.textContent = "UNAVAILABLE";
       updated.textContent = "Could not refresh";
-      message("Leaderboard temporarily unavailable.", "Please try again later. Test scores are not official rankings.");
-      console.warn("Public test leaderboard:", error instanceof Error ? error.message : "Request failed");
+      message("Leaderboard temporarily unavailable.", "Please try again later. These are not official scores.");
+      if (!controller.signal.aborted) console.warn("Public leaderboard:", error instanceof Error ? error.message : "Request failed");
     } finally {
       clearTimeout(timeout);
-      active = false;
-      refresh.disabled = false;
+      if (id === requestId) {currentController = null; refresh.disabled = false;}
     }
   }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => selectDifficulty(tab.dataset.rankingDifficulty));
+    tab.addEventListener("keydown", event => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (i + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+      tabs[next].focus();
+      selectDifficulty(tabs[next].dataset.rankingDifficulty);
+    });
+  });
   refresh.addEventListener("click", load);
   load();
-  window.setInterval(() => { if (!document.hidden) load(); }, 60000);
+  window.setInterval(() => {if (!document.hidden && !currentController) load();}, 60000);
 })();
