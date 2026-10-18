@@ -140,3 +140,9 @@
  .world-text p{max-width:30ch}
 }
 @media(prefers-reduced-motion:reduce){.home-page *,.home-page *:before,.home-page *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* The All tab lists separate rankings: never combines scores from different modes. */
+.home-page .ranking-group-note{font-size:.66rem;line-height:1.4;color:#a7d4f0;padding:6px 11px 2px}
+.home-page .ranking-group-label{font-size:.65rem;color:#51cbef;font-weight:850;letter-spacing:.08em;padding:5px 11px 2px;background:#071e3a}
+.home-page .ranking-group-empty{font-size:.7rem;color:#879fba;padding:3px 11px 6px}
+.home-page .ranking-entry-rank{color:#dde6f5;font-weight:800}
