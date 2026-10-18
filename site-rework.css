@@ -154,3 +154,20 @@
 .home-page main{flex:1 0 auto;display:flex;flex-direction:column}
 .home-page .leaderboard-section{flex:1 0 auto}
 .home-page .site-footer{flex-shrink:0;margin-top:auto}
+
+
+/* Match the approved desktop mockup.
+   style.css still sets .hero to a two-column grid and .section-head to flex.
+   The new markup already has its own grid (.hero-layout), so reset only those
+   inherited display modes rather than resizing the phone or text individually. */
+.home-page .hero{
+  display:block;
+  grid-template-columns:none;
+}
+.home-page .center-head{
+  display:block;
+  width:100%;
+}
+.home-page .center-head .section-intro{
+  margin-inline:auto;
+}
