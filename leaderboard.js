@@ -1,140 +1,156 @@
 "use strict";
 (() => {
-  // Public staging leaderboard: only position, public/anonymous pixel_id and score.
+  // Public TEST endpoint only. Different difficulties have separate score rankings.
   const API = "https://one-more-pixel-online-staging.games-tinychaos.workers.dev/api/v1/test/leaderboard";
   const list = document.getElementById("ranking-entries");
   const status = document.getElementById("ranking-status");
   const refresh = document.getElementById("ranking-refresh");
   const updated = document.getElementById("ranking-updated");
-  const tabs = Array.from(document.querySelectorAll("[data-ranking-difficulty]"));
-  if (!list || !status || !refresh || !updated || tabs.length !== 3) return;
+  const expand = document.getElementById("ranking-expand");
+  const tabs = [...document.querySelectorAll("[data-ranking-difficulty]")];
+  if (!list || !status || !refresh || !updated || !expand || tabs.length !== 4) return;
 
-  const copy = {
-    pl: {loading:"ŁADOWANIE",loadingHeading:"Ładowanie rankingu…",loadingBody:"Pobieranie wyników testowych.",
-      empty:"Brak wyników testowych.",emptyBody:"W tym trybie nie ma jeszcze wyników aktywnych testerów.",
-      noDisplay:"Brak wyników do wyświetlenia.",tryLater:"Spróbuj ponownie później.",
-      unavailable:"NIEDOSTĘPNY",unavailableHeading:"Ranking chwilowo niedostępny.",
-      unavailableBody:"Spróbuj ponownie później. To nie są oficjalne wyniki.",couldNotRefresh:"Nie udało się odświeżyć",
-      live:"TEST NA ŻYWO",updated:"Aktualizacja",anonymous:"TEST PLAYER #"},
-    en: {loading:"LOADING",loadingHeading:"Loading leaderboard…",loadingBody:"Fetching public test scores.",
-      empty:"No test scores yet.",emptyBody:"No active test players have scores in this difficulty.",
-      noDisplay:"No displayable scores.",tryLater:"Please try again later.",
-      unavailable:"UNAVAILABLE",unavailableHeading:"Leaderboard temporarily unavailable.",
-      unavailableBody:"Please try again later. These are not official scores.",couldNotRefresh:"Could not refresh",
-      live:"LIVE TEST",updated:"Updated",anonymous:"TEST PLAYER #"}
+  const text = {
+    pl:{loading:"ŁADOWANIE",loadingTitle:"Ładowanie rankingu…",loadingBody:"Pobieranie wyników testowych.",
+      emptyTitle:"Brak wyników testowych.",emptyBody:"Nie ma jeszcze aktywnych wyników w tej kategorii.",
+      badTitle:"Brak poprawnych wyników.",badBody:"Spróbuj ponownie później.",
+      unavailable:"NIEDOSTĘPNY",unavailableTitle:"Ranking chwilowo niedostępny.",
+      unavailableBody:"Spróbuj ponownie później. To nie są oficjalne wyniki.",
+      retry:"Nie udało się odświeżyć",live:"TEST NA ŻYWO",updated:"Aktualizacja",
+      anonymous:"TEST PLAYER #",full:"ZOBACZ PEŁNY RANKING",collapse:"ZWIŃ RANKING",
+      mixed:"Wyniki według poziomu — bez wspólnej klasyfikacji"},
+    en:{loading:"LOADING",loadingTitle:"Loading leaderboard…",loadingBody:"Fetching public test scores.",
+      emptyTitle:"No test scores yet.",emptyBody:"No active scores in this category.",
+      badTitle:"No displayable scores.",badBody:"Please try again later.",
+      unavailable:"UNAVAILABLE",unavailableTitle:"Leaderboard temporarily unavailable.",
+      unavailableBody:"Please try again later. These are not official scores.",
+      retry:"Could not refresh",live:"LIVE TEST",updated:"Updated",
+      anonymous:"TEST PLAYER #",full:"SEE FULL LEADERBOARD",collapse:"COLLAPSE LEADERBOARD",
+      mixed:"Results by difficulty — no combined ranking"}
   };
-  const number = new Intl.NumberFormat("en-US");
-  let difficulty = "easy", currentController = null, requestId = 0, lastState = "loading", lastEntries = [], lastUpdated = null;
   let lang = document.documentElement.lang === "en" ? "en" : "pl";
-  const t = key => copy[lang][key];
-  function message(title, description) {
+  let difficulty = "all", controller = null, requestId = 0;
+  let state = "loading", records = {}, updatedAt = null, expanded = false;
+  const modes = ["easy","normal","hard"];
+  const number = new Intl.NumberFormat("en-US");
+  const t = key => text[lang][key];
+
+  function placeholder(title,description){
     list.replaceChildren();
-    const wrap = document.createElement("div");
-    wrap.className = "ranking-placeholder";
-    const heading = document.createElement("h3");
-    heading.textContent = title;
-    const paragraph = document.createElement("p");
-    paragraph.textContent = description;
-    wrap.append(heading, paragraph);
-    list.append(wrap);
+    const wrap=document.createElement("div");wrap.className="ranking-placeholder";
+    const h=document.createElement("h3");h.textContent=title;
+    const p=document.createElement("p");p.textContent=description;
+    wrap.append(h,p);list.append(wrap);
   }
-  function entriesFrom(payload) {
-    if (Array.isArray(payload?.entries)) return payload.entries;
-    if (Array.isArray(payload?.leaderboard?.entries)) return payload.leaderboard.entries;
-    if (Array.isArray(payload?.data?.entries)) return payload.data.entries;
+  function entriesFrom(payload){
+    if(Array.isArray(payload?.entries))return payload.entries;
+    if(Array.isArray(payload?.leaderboard?.entries))return payload.leaderboard.entries;
+    if(Array.isArray(payload?.data?.entries))return payload.data.entries;
     return null;
   }
-  function render(entries) {
+  function appendRow(target,entry,index){
+    if(!entry||typeof entry!=="object")return;
+    const score=Number(entry.score);
+    if(!Number.isSafeInteger(score)||score<0)return;
+    const position=Number(entry.position);
+    const row=document.createElement("div");row.className="ranking-entry";
+    const rank=document.createElement("span");rank.className="ranking-entry-rank";
+    rank.textContent="#"+(Number.isSafeInteger(position)&&position>0?position:index+1);
+    const player=document.createElement("span");player.className="ranking-entry-player";
+    const alias=entry.pixel_id;
+    player.textContent=typeof alias==="string"&&alias.trim()?alias.trim().slice(0,64):t("anonymous")+(index+1);
+    const points=document.createElement("span");points.className="ranking-entry-score";points.textContent=number.format(score);
+    row.append(rank,player,points);target.append(row);
+  }
+  function render(){
     list.replaceChildren();
-    if (!entries.length) {
-      message(t("empty"), t("emptyBody"));
-      return;
-    }
-    const fragment = document.createDocumentFragment();
-    entries.slice(0, 100).forEach((entry,index) => {
-      if (!entry || typeof entry !== "object") return;
-      const score = Number(entry.score);
-      if (!Number.isSafeInteger(score) || score < 0) return;
-      const row = document.createElement("div"); row.className = "ranking-entry";
-      const rank = document.createElement("span"); rank.className = "ranking-entry-rank";
-      const position = Number(entry.position);
-      rank.textContent = "#" + (Number.isSafeInteger(position) && position > 0 ? position : index + 1);
-      const player = document.createElement("span"); player.className = "ranking-entry-player";
-      const pixelId = entry.pixel_id;
-      player.textContent = typeof pixelId === "string" && pixelId.trim() ? pixelId.trim().slice(0,64) : t("anonymous") + (index + 1);
-      const points = document.createElement("span"); points.className = "ranking-entry-score";
-      points.textContent = number.format(score);
-      row.append(rank,player,points);
-      fragment.append(row);
-    });
-    if (!fragment.childNodes.length) message(t("noDisplay"),t("tryLater"));
-    else list.append(fragment);
-  }
-  function paintState() {
-    if (lastState === "loading") {
-      status.textContent = t("loading");updated.textContent = t("loadingHeading");
-      message(t("loadingHeading"),t("loadingBody"));
-    } else if (lastState === "unavailable") {
-      status.textContent = t("unavailable");updated.textContent = t("couldNotRefresh");
-      message(t("unavailableHeading"),t("unavailableBody"));
+    const fragment=document.createDocumentFragment();
+    if(difficulty==="all"){
+      const info=document.createElement("div");info.className="ranking-group-note";info.textContent=t("mixed");fragment.append(info);
+      for(const mode of modes){
+        const rows=records[mode]||[];
+        const label=document.createElement("div");label.className="ranking-group-label";label.textContent=mode.toUpperCase();fragment.append(label);
+        const shown=expanded?100:2;
+        rows.slice(0,shown).forEach((entry,index)=>appendRow(fragment,entry,index));
+        if(!rows.length){
+          const p=document.createElement("div");p.className="ranking-group-empty";p.textContent=t("emptyTitle");fragment.append(p);
+        }
+      }
     } else {
-      status.textContent = t("live");
-      updated.textContent = t("updated") + " " + (lastUpdated || new Date()).toLocaleTimeString(lang === "pl" ? "pl-PL":"en-US",{hour:"2-digit",minute:"2-digit"});
-      render(lastEntries);
+      (records[difficulty]||[]).slice(0,expanded?100:5).forEach((entry,index)=>appendRow(fragment,entry,index));
+    }
+    if(fragment.childNodes.length)list.append(fragment);
+    else placeholder(t("emptyTitle"),t("emptyBody"));
+  }
+  function paint(){
+    expand.textContent=expanded?t("collapse"):t("full");
+    expand.setAttribute("aria-expanded",String(expanded));
+    expand.dataset.i18n=expanded?"collapseRanking":"fullRanking";
+    if(state==="loading"){
+      status.textContent=t("loading");updated.textContent=t("loadingTitle");
+      placeholder(t("loadingTitle"),t("loadingBody"));
+    }else if(state==="error"){
+      status.textContent=t("unavailable");updated.textContent=t("retry");
+      placeholder(t("unavailableTitle"),t("unavailableBody"));
+    }else{
+      status.textContent=t("live");
+      updated.textContent=t("updated")+" "+(updatedAt||new Date()).toLocaleTimeString(lang==="pl"?"pl-PL":"en-US",{hour:"2-digit",minute:"2-digit"});
+      render();
     }
   }
-  function selectDifficulty(next) {
-    if (!["easy","normal","hard"].includes(next)) return;
-    difficulty = next;
-    tabs.forEach(tab => {
-      const selected = tab.dataset.rankingDifficulty === difficulty;
-      tab.setAttribute("aria-selected",String(selected));
-      tab.tabIndex = selected ? 0 : -1;
-    });
+  async function fetchMode(mode,signal){
+    const url=new URL(API);url.searchParams.set("difficulty",mode);url.searchParams.set("limit","100");
+    const response=await fetch(url.toString(),{method:"GET",mode:"cors",credentials:"omit",cache:"no-store",signal,headers:{"Accept":"application/json"}});
+    if(!response.ok)throw new Error("HTTP "+response.status);
+    const payload=await response.json();
+    const entries=entriesFrom(payload);
+    if(!entries)throw new Error("Unexpected response format");
+    return entries;
+  }
+  async function load(){
+    controller?.abort();
+    const own=new AbortController();controller=own;
+    const id=++requestId;state="loading";refresh.disabled=true;paint();
+    const timeout=setTimeout(()=>own.abort(),10000);
+    try{
+      const requested=difficulty==="all"?modes:[difficulty];
+      const values=await Promise.all(requested.map(mode=>fetchMode(mode,own.signal)));
+      if(id!==requestId)return;
+      requested.forEach((mode,index)=>{records[mode]=values[index]});
+      state="ready";updatedAt=new Date();paint();
+    }catch(error){
+      if(id!==requestId)return;
+      state="error";paint();
+      if(!own.signal.aborted)console.warn("Public test leaderboard:",error instanceof Error?error.message:"Request failed");
+    }finally{
+      clearTimeout(timeout);
+      if(id===requestId){controller=null;refresh.disabled=false}
+    }
+  }
+  function selectDifficulty(next){
+    if(next!=="all"&&!modes.includes(next))return;
+    difficulty=next;expanded=false;
+    for(const tab of tabs){
+      const selected=tab.dataset.rankingDifficulty===next;
+      tab.setAttribute("aria-selected",String(selected));tab.tabIndex=selected?0:-1;
+    }
     load();
   }
-  async function load() {
-    currentController?.abort();
-    const controller = new AbortController();
-    currentController = controller;
-    const id = ++requestId;
-    refresh.disabled = true;
-    lastState = "loading"; paintState();
-    const timeout = setTimeout(() => controller.abort(),10000);
-    try {
-      const url = new URL(API);
-      url.searchParams.set("difficulty",difficulty);
-      url.searchParams.set("limit","100");
-      const response = await fetch(url.toString(),{method:"GET",mode:"cors",credentials:"omit",cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}});
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      const payload = await response.json();
-      if (id !== requestId) return;
-      const entries = entriesFrom(payload);
-      if (!entries) throw new Error("Unexpected response format");
-      lastEntries = entries;lastUpdated = new Date();lastState = "ready";paintState();
-    } catch (error) {
-      if (id !== requestId) return;
-      lastState = "unavailable";paintState();
-      if (!controller.signal.aborted) console.warn("Public leaderboard:",error instanceof Error ? error.message : "Request failed");
-    } finally {
-      clearTimeout(timeout);
-      if (id === requestId) {currentController = null;refresh.disabled = false;}
-    }
-  }
-  tabs.forEach((tab,i) => {
-    tab.addEventListener("click",() => selectDifficulty(tab.dataset.rankingDifficulty));
-    tab.addEventListener("keydown", event => {
-      if (!["ArrowLeft","ArrowRight","Home","End"].includes(event.key)) return;
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener("click",()=>selectDifficulty(tab.dataset.rankingDifficulty));
+    tab.addEventListener("keydown",event=>{
+      if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
       event.preventDefault();
-      const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (i + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+      const next=event.key==="Home"?0:event.key==="End"?tabs.length-1:(index+(event.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;
       tabs[next].focus();selectDifficulty(tabs[next].dataset.rankingDifficulty);
     });
   });
   refresh.addEventListener("click",load);
-  document.addEventListener("tinychaos:language", event => {
-    lang = event.detail?.language === "en" ? "en" : "pl";
-    if (!currentController) paintState();
+  expand.addEventListener("click",()=>{expanded=!expanded;paint();if(expanded)list.scrollTop=0});
+  document.addEventListener("tinychaos:language",event=>{
+    lang=event.detail?.language==="en"?"en":"pl";
+    paint();
   });
   load();
-  window.setInterval(() => {if (!document.hidden && !currentController) load();},60000);
+  window.setInterval(()=>{if(!document.hidden&&!controller)load()},60000);
 })();
