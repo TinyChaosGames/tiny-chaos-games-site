@@ -1,34 +1,36 @@
 <!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#070e20">
-  <meta name="description" content="ONE MORE PIXEL od Tiny Chaos Games — precyzyjne skoki, trzy kosmiczne tryby i ranking testowy. Poznaj grę na Androida.">
-  <meta property="og:title" content="Tiny Chaos Games — ONE MORE PIXEL">
-  <meta property="og:description" content="Jeden skok. Jeden błąd. Jeszcze jedna próba. Poznaj ONE MORE PIXEL.">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="pl_PL">
-  <meta property="og:locale:alternate" content="en_US">
-  <title>Tiny Chaos Games — ONE MORE PIXEL</title>
-  <link rel="canonical" href="https://tinychaosgames.pl/">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="leaderboard.css">
-  <link rel="stylesheet" href="site-rework.css">
-  <script src="site.js" defer></script>
-  <script src="leaderboard.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#041025">
+<meta name="description" content="ONE MORE PIXEL — gra zręcznościowa Tiny Chaos Games. Trzy kosmiczne tryby, precyzyjne skoki i publiczny ranking testowy.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tiny Chaos Games — ONE MORE PIXEL">
+<meta property="og:description" content="Jeden skok. Jeden błąd. Jeszcze jedna próba.">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:locale:alternate" content="en_US">
+<title>Tiny Chaos Games — ONE MORE PIXEL</title>
+<link rel="canonical" href="https://tinychaosgames.pl/">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="leaderboard.css">
+<link rel="stylesheet" href="site-rework.css">
+<script src="site.js" defer></script>
+<script src="leaderboard.js" defer></script>
 </head>
 <body class="home-page">
 <a class="skip-link" href="#main" data-i18n="skip">Przejdź do treści</a>
 <header class="site-header">
   <div class="shell header-inner">
-    <a class="brand" href="./" aria-label="Tiny Chaos Games — strona główna"><span class="brand-mark" aria-hidden="true"></span><span>TINY <em>CHAOS</em> GAMES</span></a>
-    <nav class="site-nav" aria-label="Menu">
-      <a href="#game" data-i18n="navGame">O grze</a>
-      <a href="#worlds" data-i18n="navModes">Tryby</a>
-      <a href="#leaderboard" data-i18n="navBoard">Ranking</a>
-      <a href="#studio" data-i18n="navContact">Kontakt</a>
+    <a href="./" class="brand" aria-label="Tiny Chaos Games">
+      <span class="brand-mark" aria-hidden="true"></span><span>TINY <em>CHAOS</em> GAMES</span>
+    </a>
+    <nav class="site-nav" aria-label="Menu główne">
+      <a href="#game" data-i18n="navGame">O GRZE</a>
+      <a href="#worlds" data-i18n="navModes">TRYBY</a>
+      <a href="#leaderboard" data-i18n="navBoard">RANKING</a>
+      <a href="#contact" data-i18n="navContact">KONTAKT</a>
     </nav>
     <div class="language-switch" role="group" aria-label="Language / Język">
       <button type="button" data-language="pl" aria-pressed="true">PL</button>
@@ -37,101 +39,85 @@
   </div>
 </header>
 <main id="main">
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero" id="game" aria-labelledby="hero-title">
     <div class="shell hero-layout">
       <div class="hero-copy">
-        <p class="eyebrow" data-i18n="heroOverline">TINY CHAOS GAMES PREZENTUJE</p>
         <h1 id="hero-title"><span>ONE MORE</span><strong>PIXEL</strong></h1>
         <p class="hero-tagline" data-i18n="heroTag">JEDEN SKOK. JEDEN BŁĄD. JESZCZE JEDNA PRÓBA.</p>
-        <p class="hero-description" data-i18n="heroDesc">Precyzja, rytm i kosmiczny pościg. Niewielki piksel, wielkie wyzwanie.</p>
+        <p class="hero-description" data-i18n="heroDescShort">Precyzja, rytm i kosmiczny pościg.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#game" data-i18n="discover">Poznaj grę</a>
-          <a class="btn btn-ghost" href="#leaderboard" data-i18n="testRanking">Ranking testowy</a>
+          <a class="btn btn-primary" href="#worlds"><span class="btn-symbol" aria-hidden="true">▶</span><span data-i18n="discover">Poznaj grę</span></a>
+          <a class="btn btn-ghost" href="#leaderboard"><span class="btn-symbol" aria-hidden="true">▥</span><span data-i18n="testRanking">Ranking testowy</span></a>
         </div>
-        <p class="availability" data-i18n="playStatus">ONE MORE PIXEL jest obecnie w testach Google Play.</p>
       </div>
-      <div class="hero-scene" role="img" aria-label="Kosmiczne tło z planetami i podglądem rozgrywki ONE MORE PIXEL">
-        <div class="scene-planet scene-planet-left" aria-hidden="true"></div>
-        <div class="scene-planet scene-planet-right" aria-hidden="true"></div>
-        <div class="phone-shell" aria-hidden="true">
-          <div class="phone-game">
-            <div class="game-ring game-ring-a"></div><div class="game-ring game-ring-b"></div>
-            <div class="game-trail"></div>
-            <div class="phone-hud"><span class="phone-score">168</span><span class="phone-pause">Ⅱ</span><span class="phone-fever">GORĄCZKA</span><span class="phone-fever-bar"><i></i></span><span class="phone-shards">◆ 616</span></div>
-            <span class="phone-warning">POŚCIG RUSZA</span>
-            <div class="phone-platform phone-platform-a"></div><div class="phone-platform phone-platform-b"></div><div class="phone-player"></div><div class="phone-pickup">◆</div>
-            <div class="phone-bottom"></div>
-          </div>
-        </div>
+      <div class="hero-scene" aria-hidden="true">
+        <div class="phone-shell"><div class="phone-screen">
+          <div class="phone-space"></div>
+          <div class="phone-hud"><span class="phone-score">168</span><span class="phone-pause">Ⅱ</span><span class="phone-fever">GORĄCZKA</span><div class="phone-fever-bar"><i></i></div><span class="phone-shards">◆ 616</span></div>
+          <span class="phone-warning">POŚCIG RUSZA 1.9</span>
+        </div></div>
       </div>
     </div>
   </section>
-
-  <section class="section game-section" id="game" aria-labelledby="game-title">
-    <div class="shell game-intro">
-      <p class="eyebrow" data-i18n="gameEyebrow">01 / GRA</p>
-      <h2 id="game-title" data-i18n="gameTitle">Mały piksel. Duża precyzja.</h2>
-      <p class="section-intro" data-i18n="gameDesc">Przytrzymaj, by naładować skok. Puść, żeby wylądować na kolejnej platformie. Szukaj idealnego rytmu i pobij swój rekord.</p>
-      <div class="game-features">
-        <div><span aria-hidden="true">◇</span><b data-i18n="feature1">Precyzyjne lądowania</b></div>
-        <div><span aria-hidden="true">✦</span><b data-i18n="feature2">Gorączka i serie</b></div>
-        <div><span aria-hidden="true">◆</span><b data-i18n="feature3">Odłamki i kosmetyka</b></div>
-        <div><span aria-hidden="true">↗</span><b data-i18n="feature4">Jeszcze jedna próba</b></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section worlds-section" id="worlds" aria-labelledby="worlds-title">
+  <section class="worlds-section" id="worlds" aria-labelledby="worlds-title">
     <div class="shell">
       <div class="section-head center-head">
-        <p class="eyebrow" data-i18n="worldsEyebrow">02 / TRYBY GRY</p>
         <h2 id="worlds-title" data-i18n="worldsTitle">TRZY ŚWIATY. JEDNO WYZWANIE.</h2>
-        <p class="section-intro" data-i18n="worldsIntro">Ten sam cel. Trzy różne atmosfery. Wybierz swój kosmiczny rytm.</p>
+        <p class="section-intro" data-i18n="worldsIntroConcept">Ten sam cel. Trzy różne doświadczenia. Sprawdź, jak daleko wspinasz się w kosmicznym chaosie.</p>
       </div>
       <div class="world-grid">
         <article class="world-card world-easy">
-          <div class="world-art" aria-hidden="true"><div class="world-orb"></div><div class="world-rays"></div><div class="world-ledge"></div><div class="world-block"></div></div>
-          <div class="world-copy"><p class="world-title">EASY</p><p class="world-subtitle">FLOW AURORA</p><p data-i18n="easyDesc">Spokojniejszy rytm i turkusowe zorze. Dobry tryb na początek.</p></div>
+          <div class="world-art"><img src="assets/web/flow-aurora.svg" alt="" width="1000" height="470" loading="eager"></div>
+          <div class="world-copy"><div class="world-text"><h3>EASY</h3><strong>FLOW AURORA</strong><p data-i18n="easyConcept">Spokojniejszy rytm, idealny na start. Naucz się precyzji i poczuj przepływ.</p></div>
+          <a href="#leaderboard" class="world-arrow" data-mode-link="easy" aria-label="EASY — ranking"><span aria-hidden="true">›</span></a></div>
         </article>
         <article class="world-card world-normal">
-          <div class="world-art" aria-hidden="true"><div class="world-orb"></div><div class="world-rays"></div><div class="world-ledge"></div><div class="world-block"></div></div>
-          <div class="world-copy"><p class="world-title">NORMAL</p><p class="world-subtitle">CHASE NEON ORBIT</p><p data-i18n="normalDesc">Więcej dynamiki, magentowe smugi i rosnąca presja pościgu.</p></div>
+          <div class="world-art"><img src="assets/web/chase-neon-orbit.svg" alt="" width="1000" height="470" loading="eager"></div>
+          <div class="world-copy"><div class="world-text"><h3>NORMAL</h3><strong>CHASE NEON ORBIT</strong><p data-i18n="normalConcept">Większa dynamika i kosmiczny pościg. Idealny balans wyzwania i płynności.</p></div>
+          <a href="#leaderboard" class="world-arrow" data-mode-link="normal" aria-label="NORMAL — ranking"><span aria-hidden="true">›</span></a></div>
         </article>
         <article class="world-card world-hard">
-          <div class="world-art" aria-hidden="true"><div class="world-orb"></div><div class="world-rays"></div><div class="world-ledge"></div><div class="world-block"></div></div>
-          <div class="world-copy"><p class="world-title">HARD</p><p class="world-subtitle">DARK SUPERNOVA</p><p data-i18n="hardDesc">Mroczny kosmos i ognista energia. Dla tych, którzy lubią wyzwania.</p></div>
+          <div class="world-art"><img src="assets/web/dark-supernova.svg" alt="" width="1000" height="470" loading="eager"></div>
+          <div class="world-copy"><div class="world-text"><h3>HARD</h3><strong>DARK SUPERNOVA</strong><p data-i18n="hardConcept">Maksymalne wyzwanie w mrocznym kosmosie. Tylko dla najbardziej zdeterminowanych.</p></div>
+          <a href="#leaderboard" class="world-arrow" data-mode-link="hard" aria-label="HARD — ranking"><span aria-hidden="true">›</span></a></div>
         </article>
       </div>
     </div>
   </section>
-
-  <section class="section section-dark" id="leaderboard" aria-labelledby="leaderboard-title">
+  <section class="leaderboard-section" id="leaderboard" aria-labelledby="leaderboard-title">
     <div class="shell">
-      <div class="section-head ranking-heading"><div><p class="eyebrow" data-i18n="boardEyebrow">03 / TESTY ONLINE</p><h2 id="leaderboard-title" data-i18n="boardTitle">GLOBALNY RANKING — TESTY</h2><p class="section-intro" data-i18n="boardIntro">Wyniki z testowej wersji ONE MORE PIXEL. Ranking jest niezweryfikowany i nie jest rankingiem oficjalnym.</p></div></div>
       <div class="ranking-preview">
-        <div class="ranking-top"><span data-i18n="boardHeader">PUBLICZNY RANKING TESTOWY</span><span class="preview-pill" id="ranking-status" role="status">ŁADOWANIE</span></div>
-        <div class="ranking-difficulties" role="tablist" aria-label="Poziom trudności rankingu">
-          <button type="button" role="tab" aria-selected="true" tabindex="0" data-ranking-difficulty="easy">EASY</button>
-          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="normal">NORMAL</button>
-          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="hard">HARD</button>
+        <div class="ranking-about">
+          <h2 id="leaderboard-title"><span class="trophy-icon" aria-hidden="true">🏆</span><span data-i18n="boardTitle">GLOBALNY RANKING — TESTY</span></h2>
+          <div class="ranking-notice"><span class="notice-icon" aria-hidden="true">!</span><div>
+            <strong data-i18n="rankAlertTitle">NIEZWERYFIKOWANE WYNIKI TESTOWE</strong>
+            <p data-i18n="rankAlertDesc">To tymczasowy ranking dostępny w fazie testów. Wyniki mogą zostać zresetowane.</p>
+            <button class="rank-expand" id="ranking-expand" type="button" aria-expanded="false" data-i18n="fullRanking">ZOBACZ PEŁNY RANKING</button>
+          </div></div>
+          <p class="ranking-test-note" data-i18n="boardNote">Wyniki są niezweryfikowane. Testerzy bez zgody na publikację aliasu są wyświetlani anonimowo. Wynik może zniknąć po usunięciu danych.</p>
         </div>
-        <div class="ranking-columns"><span data-i18n="rankCol">MIEJSCE</span><span data-i18n="playerCol">GRACZ</span><span data-i18n="scoreCol">WYNIK</span></div>
-        <div id="ranking-entries" aria-live="polite" aria-relevant="additions text"><div class="ranking-placeholder"><h3 data-i18n="loadingBoard">Ładowanie rankingu…</h3></div></div>
-        <p class="ranking-test-note" data-i18n="boardNote">Wyniki są niezweryfikowane. Testerzy bez zgody na publikację aliasu są wyświetlani anonimowo. Wynik może zniknąć po usunięciu danych.</p>
-        <div class="ranking-foot"><span class="ranking-live-controls"><span id="ranking-updated">Ładowanie…</span><button class="ranking-refresh" id="ranking-refresh" type="button" data-i18n="refresh">Odśwież ↻</button></span><span data-i18n="unverified">TYLKO WYNIKI TESTOWE</span></div>
+        <div class="ranking-data">
+          <div class="ranking-difficulties" role="tablist" aria-label="Poziom trudności rankingu">
+            <button type="button" role="tab" aria-selected="true" tabindex="0" data-ranking-difficulty="all" data-i18n="allPlayers">WSZYSCY</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="easy">EASY</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="normal">NORMAL</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="hard">HARD</button>
+          </div>
+          <div class="ranking-columns"><span data-i18n="rankColShort">#</span><span data-i18n="playerCol">GRACZ</span><span data-i18n="scoreCol">WYNIK</span></div>
+          <div id="ranking-entries" aria-live="polite" aria-relevant="additions text"><div class="ranking-placeholder"><h3 data-i18n="loadingBoard">Ładowanie rankingu…</h3></div></div>
+          <div class="ranking-foot"><span id="ranking-status" role="status">ŁADOWANIE</span><span class="ranking-live-controls"><span id="ranking-updated">Ładowanie…</span><button class="ranking-refresh" id="ranking-refresh" type="button" data-i18n="refresh">Odśwież ↻</button></span></div>
+        </div>
       </div>
     </div>
   </section>
-
-  <section class="section challenge-section" id="challenges" aria-labelledby="challenge-title"><div class="shell challenge-layout">
-    <div><p class="eyebrow" data-i18n="challengeEyebrow">04 / WYZWANIA</p><h2 id="challenge-title">BEAT MY <span>PIXEL</span></h2><p class="section-intro" data-i18n="challengeDesc">Wyślij znajomemu kod wyzwania. Ta sama trasa, te same zasady i tylko trzy próby na pobicie wyniku.</p><p class="muted-note" data-i18n="challengeNote">Funkcja testowana wewnątrz gry. Wyzwania nie są uruchamiane z tej strony.</p></div>
-    <div class="challenge-card" aria-hidden="true"><span class="challenge-pixel"></span><span class="versus">VS</span><span class="challenge-pixel alternate"></span><div class="challenge-lines"></div></div>
-  </div></section>
-
-  <section class="section studio-section" id="studio" aria-labelledby="studio-title"><div class="shell studio-layout">
-    <div><p class="eyebrow" data-i18n="studioEyebrow">05 / O NAS</p><h2 id="studio-title">TINY <span>CHAOS</span> GAMES</h2><p data-i18n="studioDesc">Małe niezależne studio, które lubi proste pomysły i dopracowaną rozgrywkę. ONE MORE PIXEL to nasz obecny projekt.</p><a class="btn btn-ghost" href="mailto:games.tinychaos@gmail.com" data-i18n="contact">Napisz do nas</a></div>
-    <div class="studio-emblem" aria-hidden="true"><div class="emblem-halo"></div><div class="emblem-pixel"></div></div>
-  </div></section>
 </main>
-<footer class="site-footer"><div class="shell footer-upper"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span><span>TINY <em>CHAOS</em> GAMES</span></a><p data-i18n="footerTag">Małe gry. Duże wyzwania.</p></div><div class="shell footer-lower"><span>© 2026 Tiny Chaos Games</span><div><a href="privacy/one-more-pixel/" data-i18n="privacyEn">Privacy Policy (EN)</a><a href="privacy/one-more-pixel/pl/" data-i18n="privacyPl">Polityka prywatności (PL)</a><a href="mailto:games.tinychaos@gmail.com" data-i18n="contactShort">Kontakt</a></div></div></footer>
+<footer class="site-footer" id="contact"><div class="shell footer-inner">
+  <a href="./" class="brand"><span class="brand-mark" aria-hidden="true"></span><span>TINY <em>CHAOS</em> GAMES</span></a>
+  <small>© 2026 Tiny Chaos Games</small>
+  <nav aria-label="Footer">
+    <a href="privacy/one-more-pixel/pl/" data-i18n="privacyPl">Polityka prywatności (PL)</a>
+    <a href="privacy/one-more-pixel/" data-i18n="privacyEn">Privacy Policy (EN)</a>
+    <a href="mailto:games.tinychaos@gmail.com" data-i18n="contactShort">Kontakt</a>
+  </nav>
+</div></footer>
 </body></html>

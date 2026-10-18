@@ -2,6 +2,14 @@
 (() => {
   const translations = {
     pl: {
+    heroDescShort:"Precyzja, rytm i kosmiczny pościg.",
+    worldsIntroConcept:"Ten sam cel. Trzy różne doświadczenia. Sprawdź, jak daleko wspinasz się w kosmicznym chaosie.",
+    easyConcept:"Spokojniejszy rytm, idealny na start. Naucz się precyzji i poczuj przepływ.",
+    normalConcept:"Większa dynamika i kosmiczny pościg. Idealny balans wyzwania i płynności.",
+    hardConcept:"Maksymalne wyzwanie w mrocznym kosmosie. Tylko dla najbardziej zdeterminowanych.",
+    rankAlertTitle:"NIEZWERYFIKOWANE WYNIKI TESTOWE",
+    rankAlertDesc:"To tymczasowy ranking dostępny w fazie testów. Wyniki mogą zostać zresetowane.",
+    fullRanking:"ZOBACZ PEŁNY RANKING",collapseRanking:"ZWIŃ RANKING",allPlayers:"WSZYSCY",rankColShort:"#",
       skip:"Przejdź do treści",navGame:"O grze",navModes:"Tryby",navBoard:"Ranking",navContact:"Kontakt",
       heroOverline:"TINY CHAOS GAMES PREZENTUJE",heroTag:"JEDEN SKOK. JEDEN BŁĄD. JESZCZE JEDNA PRÓBA.",
       heroDesc:"Precyzja, rytm i kosmiczny pościg. Niewielki piksel, wielkie wyzwanie.",
@@ -29,6 +37,14 @@
       privacyEn:"Privacy Policy (EN)",privacyPl:"Polityka prywatności (PL)"
     },
     en: {
+    heroDescShort:"Precision, rhythm and a cosmic chase.",
+    worldsIntroConcept:"Same goal. Three different experiences. See how far you can climb through the cosmic chaos.",
+    easyConcept:"A calmer rhythm, great for getting started. Learn precision and find your flow.",
+    normalConcept:"More speed and a cosmic chase. A good balance of challenge and flow.",
+    hardConcept:"The ultimate challenge in dark space. For the most determined players.",
+    rankAlertTitle:"UNVERIFIED TEST SCORES",
+    rankAlertDesc:"This is a temporary test leaderboard. Scores may be reset.",
+    fullRanking:"SEE FULL LEADERBOARD",collapseRanking:"COLLAPSE LEADERBOARD",allPlayers:"ALL",rankColShort:"#",
       skip:"Skip to content",navGame:"The game",navModes:"Modes",navBoard:"Leaderboard",navContact:"Contact",
       heroOverline:"TINY CHAOS GAMES PRESENTS",heroTag:"ONE JUMP. ONE MISTAKE. ONE MORE TRY.",
       heroDesc:"Precision, rhythm and a cosmic chase. One tiny pixel, one big challenge.",
@@ -70,5 +86,12 @@
   const saved = (() => {try {return localStorage.getItem("tinychaos-language");} catch (_) {return null;}})();
   const initial = saved === "pl" || saved === "en" ? saved : "pl";
   document.querySelectorAll("[data-language]").forEach(button => button.addEventListener("click",() => applyLanguage(button.dataset.language)));
+  document.querySelectorAll("[data-mode-link]").forEach(link => {
+    link.addEventListener("click", () => {
+      const difficulty = link.dataset.modeLink;
+      const tab = Array.from(document.querySelectorAll("[data-ranking-difficulty]")).find(node => node.dataset.rankingDifficulty === difficulty);
+      tab?.click();
+    });
+  });
   applyLanguage(initial);
 })();
