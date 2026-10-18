@@ -146,3 +146,11 @@
 .home-page .ranking-group-label{font-size:.65rem;color:#51cbef;font-weight:850;letter-spacing:.08em;padding:5px 11px 2px;background:#071e3a}
 .home-page .ranking-group-empty{font-size:.7rem;color:#879fba;padding:3px 11px 6px}
 .home-page .ranking-entry-rank{color:#dde6f5;font-weight:800}
+
+/* Keep the footer at the end of the page. The older style.css contains a
+   1500px absolute star overlay; it extends scroll height past the footer. */
+.home-page::before{content:none}
+.home-page{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+.home-page main{flex:1 0 auto;display:flex;flex-direction:column}
+.home-page .leaderboard-section{flex:1 0 auto}
+.home-page .site-footer{flex-shrink:0;margin-top:auto}
