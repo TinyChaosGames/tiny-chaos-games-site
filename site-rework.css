@@ -171,3 +171,46 @@
 .home-page .center-head .section-intro{
   margin-inline:auto;
 }
+
+/* Build039: fourth world + VOID COLLAPSE atmosphere */
+.home-page .world-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.home-page .world-card{height:272px}
+.home-page .world-copy{min-height:70%;padding:30px 13px 12px}
+.home-page .world-text h3{font-size:clamp(1.07rem,1.62vw,1.65rem)}
+.home-page .world-text strong{font-size:clamp(.67rem,.8vw,.85rem);white-space:normal}
+.home-page .world-text p{font-size:clamp(.69rem,.74vw,.78rem);max-width:33ch}
+.home-page .world-armageddon{--accent:#b875ff;border-color:#be6aff;box-shadow:0 8px 28px #9f3cbe3e,0 0 0 1px #ff655636}
+.home-page .world-armageddon .world-art img{filter:saturate(1.12) contrast(1.1)}
+.home-page .world-armageddon .world-copy{background:linear-gradient(transparent 0%,#14071ed6 25%,#09071df5 78%)}
+.home-page .world-armageddon .world-text h3{color:#f3bdff;text-shadow:0 0 12px #d243fe60}
+.home-page .world-armageddon .world-text strong{color:#ff8c85}
+.home-page .world-new{position:absolute;top:10px;left:11px;padding:4px 9px;border:1px solid #df88ff;border-radius:4px;background:#180824e6;color:#f9d5ff;font-size:.62rem;font-weight:900;letter-spacing:.08em}
+.home-page .world-mechanics{display:block;margin-top:9px;color:#f7b2ff;font-size:.55rem;line-height:1.5;font-weight:850;letter-spacing:.028em}
+.home-page .world-armageddon .world-arrow:hover{background:#9a4cd8;color:white}
+/* Distinct TEST leaderboards — mode scores, UTC daily scores and challenge wins. */
+.home-page .ranking-difficulties{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.home-page .ranking-difficulties button{font-size:.66rem;min-width:0;padding:8px 3px;overflow-wrap:anywhere}
+.home-page .ranking-difficulties button[data-ranking-difficulty="armageddon"]{border-color:#8051b6;color:#e0b4ff}
+.home-page .ranking-difficulties button[data-ranking-difficulty="armageddon"][aria-selected="true"]{background:#34134c;border-color:#d178ff;color:#fff;box-shadow:inset 0 0 11px #bb5aff55}
+.home-page .ranking-difficulties button[data-ranking-difficulty="daily"],.home-page .ranking-difficulties button[data-ranking-difficulty="wins"]{border-color:#365f86}
+.home-page .ranking-date-filter{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 4px;color:#c9d9f1;font-size:.7rem;font-weight:800}
+.home-page .ranking-date-filter[hidden]{display:none}
+.home-page .ranking-date-filter input{min-height:35px;max-width:175px;border:1px solid #397caf;border-radius:5px;background:#071c35;color:#f4f8ff;padding:5px 9px;font:inherit;color-scheme:dark}
+.home-page .ranking-date-filter input:focus-visible{outline:3px solid #ffd75e;outline-offset:2px}
+@media(max-width:1150px){
+ .home-page .world-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:850px;margin-inline:auto}
+ .home-page .world-card{height:255px}
+ .home-page .world-text h3{font-size:1.65rem}
+ .home-page .world-text strong{font-size:.9rem}
+ .home-page .world-text p{font-size:.8rem}
+}
+@media(max-width:720px){
+ .home-page .world-grid{grid-template-columns:1fr;max-width:470px}
+ .home-page .world-card{height:255px!important}
+ .home-page .ranking-difficulties{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .home-page .ranking-difficulties button{font-size:.68rem;padding:9px 4px}
+}
+@media(max-width:400px){
+ .home-page .ranking-difficulties{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .home-page .world-card{height:260px!important}
+}
