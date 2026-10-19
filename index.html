@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#041025">
-<meta name="description" content="ONE MORE PIXEL — gra zręcznościowa Tiny Chaos Games. Trzy kosmiczne tryby, precyzyjne skoki i publiczny ranking testowy.">
+<meta name="description" content="ONE MORE PIXEL — gra zręcznościowa Tiny Chaos Games. Cztery kosmiczne tryby, w tym ARMAGEDDON: VOID COLLAPSE, precyzyjne skoki i rankingi testowe Daily oraz Beat My Pixel.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tiny Chaos Games — ONE MORE PIXEL">
 <meta property="og:description" content="Jeden skok. Jeden błąd. Jeszcze jedna próba.">
@@ -14,10 +14,10 @@
 <title>Tiny Chaos Games — ONE MORE PIXEL</title>
 <link rel="canonical" href="https://tinychaosgames.pl/">
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="leaderboard.css">
-<link rel="stylesheet" href="site-rework.css">
-<script src="site.js" defer></script>
-<script src="leaderboard.js" defer></script>
+<link rel="stylesheet" href="leaderboard.css?v=b039">
+<link rel="stylesheet" href="site-rework.css?v=b039">
+<script src="site.js?v=b039" defer></script>
+<script src="leaderboard.js?v=b039" defer></script>
 </head>
 <body class="home-page">
 <a class="skip-link" href="#main" data-i18n="skip">Przejdź do treści</a>
@@ -62,8 +62,8 @@
   <section class="worlds-section" id="worlds" aria-labelledby="worlds-title">
     <div class="shell">
       <div class="section-head center-head">
-        <h2 id="worlds-title" data-i18n="worldsTitle">TRZY ŚWIATY. JEDNO WYZWANIE.</h2>
-        <p class="section-intro" data-i18n="worldsIntroConcept">Ten sam cel. Trzy różne doświadczenia. Sprawdź, jak daleko wspinasz się w kosmicznym chaosie.</p>
+        <h2 id="worlds-title" data-i18n="worldsTitle">CZTERY ŚWIATY. JEDNO WYZWANIE.</h2>
+        <p class="section-intro" data-i18n="worldsIntroConcept">Ten sam cel. Cztery różne doświadczenia — od FLOW AURORA po ekstremalny ARMAGEDDON.</p>
       </div>
       <div class="world-grid">
         <article class="world-card world-easy">
@@ -80,6 +80,12 @@
           <div class="world-art"><img src="assets/web/dark-supernova.svg" alt="" width="1000" height="470" loading="eager"></div>
           <div class="world-copy"><div class="world-text"><h3>HARD</h3><strong>DARK SUPERNOVA</strong><p data-i18n="hardConcept">Maksymalne wyzwanie w mrocznym kosmosie. Tylko dla najbardziej zdeterminowanych.</p></div>
           <a href="#leaderboard" class="world-arrow" data-mode-link="hard" aria-label="HARD — ranking"><span aria-hidden="true">›</span></a></div>
+        </article>
+        <article class="world-card world-armageddon">
+          <div class="world-art"><img src="assets/web/void-collapse.svg" alt="" width="1000" height="470" loading="lazy"></div>
+          <span class="world-new" data-i18n="newMode">NOWY TRYB</span>
+          <div class="world-copy"><div class="world-text"><h3>ARMAGEDDON</h3><strong>VOID COLLAPSE</strong><p data-i18n="armageddonConcept">Ekstremalna próba bez taryfy ulgowej. Pękające platformy i kosmiczna otchłań czekają od pierwszego skoku.</p><small class="world-mechanics">FRACTURE · OVERDRIVE · NEEDLE · DRIFT</small></div>
+          <a href="#leaderboard" class="world-arrow" data-mode-link="armageddon" aria-label="ARMAGEDDON — ranking"><span aria-hidden="true">›</span></a></div>
         </article>
       </div>
     </div>
@@ -102,8 +108,15 @@
             <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="easy">EASY</button>
             <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="normal">NORMAL</button>
             <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="hard">HARD</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="armageddon">ARMAGEDDON</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="daily" data-i18n="dailyTab">DAILY</button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-ranking-difficulty="wins" data-i18n="beatWinsTab">BEAT WINS</button>
           </div>
-          <div class="ranking-columns"><span data-i18n="rankColShort">#</span><span data-i18n="playerCol">GRACZ</span><span data-i18n="scoreCol">WYNIK</span></div>
+          <div class="ranking-date-filter" id="ranking-date-filter" hidden>
+            <label for="ranking-date" data-i18n="dailyDate">DZIEŃ (UTC)</label>
+            <input id="ranking-date" type="date" aria-label="Daily Challenge — UTC" autocomplete="off">
+          </div>
+          <div class="ranking-columns"><span data-i18n="rankColShort">#</span><span data-i18n="playerCol">GRACZ</span><span id="ranking-value-heading" data-i18n="scoreCol">WYNIK</span></div>
           <div id="ranking-entries" aria-live="polite" aria-relevant="additions text"><div class="ranking-placeholder"><h3 data-i18n="loadingBoard">Ładowanie rankingu…</h3></div></div>
           <div class="ranking-foot"><span id="ranking-status" role="status">ŁADOWANIE</span><span class="ranking-live-controls"><span id="ranking-updated">Ładowanie…</span><button class="ranking-refresh" id="ranking-refresh" type="button" data-i18n="refresh">Odśwież ↻</button></span></div>
         </div>
